@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'test_without_migrations',
     'xyinc.api',
     'xyinc.utils',
 ]
