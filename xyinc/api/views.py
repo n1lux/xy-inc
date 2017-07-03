@@ -42,7 +42,7 @@ class SearchPoi(APIView):
         if param_x is not None and param_y is not None and d_max is not None:
             results = Poi.search(x=param_x, y=param_y, radius=d_max)
         else:
-            results = Poi.get()
+            results = []
 
         serializer = PoiSerializer(data=results, many=True)
         serializer.is_valid()
