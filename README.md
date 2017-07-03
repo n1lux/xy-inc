@@ -12,7 +12,7 @@ Projeto para cadastro e recuperação Pontos de Interesse (POI's).
 6. Inicialize os dados de teste.
 
 ```console
-git clone git@github.com:n1lux/xy-inc.git xyinc
+git clone https://github.com/n1lux/xy-inc.git xyinc
 cd xyinc
 python -m venv .xyinc
 source .xyinc/bin/activate
