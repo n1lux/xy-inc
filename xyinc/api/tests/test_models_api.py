@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 
@@ -18,7 +19,7 @@ class APIModelTest(TestCase):
 
     def test_retrieve_all_pois(self):
         obj_all = Poi.get()
-        self.assertIsInstance(obj_all, list)
+        self.assertIsInstance(obj_all, QuerySet)
 
     def test_retrieve_one_poi_by_name(self):
         obj = Poi.get(name=self.name)
@@ -42,11 +43,3 @@ class APIModelTest(TestCase):
 
     def test_poi_str(self):
         self.assertEqual('Test poi (10, 12)', str(self.obj))
-
-    def test_create_poi_negative_x(self):
-        with self.assertRaises(ValidationError) as ex:
-            obj = Poi.create(name='Test', x=-1, y=-2)
-            obj.save()
-
-    def test_create_poi_negative_y(self):
-        pass

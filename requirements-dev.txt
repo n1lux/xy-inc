@@ -1,0 +1,2 @@
+-r requeriments.txt
+django-test-without-migrations==0.6
