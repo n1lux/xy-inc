@@ -35,17 +35,29 @@ class PoisList(APIView):
 
 class SearchPoi(APIView):
     def get(self, request, format=None):
-        param_x = request.query_params.get('x', None)
-        param_y = request.query_params.get('y', None)
-        d_max = request.query_params.get('d-max', None)
 
-        if param_x is not None and param_y is not None and d_max is not None:
-            results = Poi.search(x=param_x, y=param_y, radius=d_max)
-        else:
-            return Response({'message': "Need query params. ex: ?x=20&y=10&d-max=10"})
+        kwargs = {'x': request.query_params.get('x', None),
+                  'y': request.query_params.get('y', None),
+                  'radius': request.query_params.get('d-max', None)
+                  }
 
+        has_errors = _check_params(**kwargs)
+        if has_errors:
+            return Response(has_errors)
+
+        results = Poi.search(**kwargs)
         serializer = PoiSerializer(data=results, many=True)
         serializer.is_valid()
         return Response(serializer.data)
 
 
+def _check_params(**kwargs):
+    errors = []
+    for k, v in kwargs.items():
+        try:
+            int(v)
+        except TypeError:
+            errors.append({k: "Can not be null.", "ex": "Need query params. ex: ?x=20&y=10&d-max=10"})
+        except ValueError:
+            errors.append({k: "A valid integer is required."})
+    return errors

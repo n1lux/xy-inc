@@ -104,10 +104,18 @@ class APITestPoiRadius(APITestCase):
         self.assertJSONEqual(resp.content, expected_results)
 
 
-    def test_xyinc_withou_params(self):
+    def test_xyinc_without_params(self):
         for poi in self.xyin_pois:
             self.client.post('/api/v0/pois/', data=poi)
 
         query = {'y': 10, 'd-max': 10}
         resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
         self.assertIn("Need query params. ex: ?x=20&y=10&d-max=10", str(resp.content))
+
+    def test_xyinc_search_x_char(self):
+        for poi in self.xyin_pois:
+            self.client.post('/api/v0/pois/', data=poi)
+
+        query = {'x': 'a', 'y': 10, 'd-max': 10}
+        resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
+        self.assertIn("A valid integer is required", str(resp.content))
