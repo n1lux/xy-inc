@@ -31,7 +31,16 @@ python manage.py runserver
 ```
 
 ## Como testar os serviços
+Dados para o envio do json
 
+```bash
+{
+    "name": <string>,
+    "x": <int>,
+    "y": <int>,
+}
+
+```
 ### No navegador
 
 #### Para consultar todo os POI's cadastrados

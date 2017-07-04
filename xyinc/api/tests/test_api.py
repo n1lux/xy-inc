@@ -11,52 +11,54 @@ class APITests(APITestCase):
 
 
 class APITestPoi(APITestCase):
+    def setUp(self):
+        self.resouce_url = '/api/v0/pois/'
     def test_pois_get(self):
         """ Pois test must return status code 200 """
-        resp = self.client.get('/api/v0/pois/')
+        resp = self.client.get(self.resouce_url)
         self.assertEqual(200, resp.status_code)
         self.assertEqual(str([]), str(resp.data))
 
     def test_create_poi(self):
         """ Poi create test must return status 201 and data"""
         data = {'name': 'test post', 'x': 10, 'y': 15}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         self.assertEqual(str(resp.data), str(data))
 
     def test_create_poi_with_name_none(self):
         data = {'name': None, 'x': 10, 'y': 15}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'name': ['This field may not be null.']}, json.loads(resp.content))
 
     def test_create_poi_with_x_none(self):
         data = {'name': 'Test poi', 'x': None, 'y': 15}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'x': ['This field may not be null.']}, json.loads(resp.content))
 
     def test_create_poi_with_y_none(self):
         data = {'name': 'Test poi', 'x': 10, 'y': None}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'y': ['This field may not be null.']}, json.loads(resp.content))
 
     def test_create_poi_without_name(self):
         data = {'x': 10, 'y': 15}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'name': ['This field is required.']}, json.loads(resp.content))
 
     def test_create_poi_without_x(self):
         data = {'name': 'Test poi', 'y': 15}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'x': ['This field is required.']}, json.loads(resp.content))
 
     def test_create_poi_without_y(self):
         data = {'name': 'Test poi', 'x': 10}
-        resp = self.client.post('/api/v0/pois/', data=data, format='json')
+        resp = self.client.post(self.resouce_url, data=data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual({'y': ['This field is required.']}, json.loads(resp.content))
 
