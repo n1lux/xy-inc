@@ -67,10 +67,17 @@ class Poi(BasicModel):
     def search(cls, x, y, radius, **kwargs):
         x, y, radius = int(x), int(y), int(radius)
 
-        return cls.point_distance(px=x, py=y, radius=radius, queryset=cls.get())
+        kwargs['poix'] = x
+        kwargs['poiy'] = y
+        kwargs['radius'] = radius
+
+        if 'queryset' not in kwargs:
+            kwargs['queryset'] = cls.get()
+
+        return cls.point_distance(**kwargs)
 
     @staticmethod
-    def point_distance(px, py, radius,  queryset):
+    def point_distance(poix, poiy, radius,  queryset):
         for p in queryset:
-            if sqrt(pow(p.x - px, 2) + pow(p.y - py, 2)) < radius:
+            if sqrt(pow(p.x - poix, 2) + pow(p.y - poiy, 2)) <= radius:
                 yield p
