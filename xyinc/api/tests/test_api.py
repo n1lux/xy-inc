@@ -110,4 +110,4 @@ class APITestPoiRadius(APITestCase):
 
         query = {'y': 10, 'd-max': 10}
         resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
-        self.assertEqual(json.loads(resp.content), [])
+        self.assertIn("Need query params. ex: ?x=20&y=10&d-max=10", str(resp.content))
