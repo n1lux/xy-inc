@@ -104,7 +104,23 @@ class APITestPoiRadius(APITestCase):
         self.assertJSONEqual(resp.content, expected_results)
 
 
-    def test_xyinc_without_params(self):
+    def test_xyinc_without_params_status_code(self):
+        for poi in self.xyin_pois:
+            self.client.post('/api/v0/pois/', data=poi)
+
+        query = {'y': 10, 'd-max': 10}
+        resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_xyinc_without_params_not_null(self):
+        for poi in self.xyin_pois:
+            self.client.post('/api/v0/pois/', data=poi)
+
+        query = {'y': 10, 'd-max': 10}
+        resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
+        self.assertIn('"x":"Can not be null."', str(resp.content))
+
+    def test_xyinc_without_params_ex_msg(self):
         for poi in self.xyin_pois:
             self.client.post('/api/v0/pois/', data=poi)
 
@@ -119,3 +135,4 @@ class APITestPoiRadius(APITestCase):
         query = {'x': 'a', 'y': 10, 'd-max': 10}
         resp = self.client.get('/api/v0/pois/search/', data=query, format='json')
         self.assertIn("A valid integer is required", str(resp.content))
+

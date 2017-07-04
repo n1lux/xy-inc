@@ -43,7 +43,7 @@ class SearchPoi(APIView):
 
         has_errors = _check_params(**kwargs)
         if has_errors:
-            return Response(has_errors)
+            return Response(has_errors, status=status.HTTP_400_BAD_REQUEST)
 
         results = Poi.search(**kwargs)
         serializer = PoiSerializer(data=results, many=True)
